@@ -92,6 +92,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText = view.findViewById(R.id.title_text);
         backButton = view.findViewById(R.id.back_button);
         listView = view.findViewById(R.id.list_view);
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         return view;
     }
@@ -141,7 +142,7 @@ public class ChooseAreaFragment extends Fragment {
             currentLevel = LEVEL_PROVINCE;
         } else {
             String address = "http://guolin.tech/api/china";
-            queryFromServer(address, "provice");
+            queryFromServer(address, "province");
         }
     }
 
@@ -168,7 +169,7 @@ public class ChooseAreaFragment extends Fragment {
     }
 
     /**
-     * 查询选中市内所有的县，优先从数据库查询，如果没有查询到再去服务区上查询
+     * 查询选中市内所有的县，优先从数据库查询，如果没有查询到再去服务器上查询
      */
     private void queryCounties() {
         titleText.setText(selectedCity.getCityName());
@@ -219,7 +220,7 @@ public class ChooseAreaFragment extends Fragment {
                 } else if ("city".equals(type)) {
                     result = Utility.handleCityResponse(responseText, selectedProvince.getId());
                 } else if ("county".equals(type)) {
-                    result = Utility.handleCountyPesponse(responseText, selectedCity.getId());
+                    result = Utility.handleCountyResponse(responseText, selectedCity.getId());
                 }
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {
